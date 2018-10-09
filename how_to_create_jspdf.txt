@@ -1,0 +1,31 @@
+Using npm:
+
+npm install jspdf --save
+
+Add following in angular-cli.json:
+
+"scripts": [ "../node_modules/jspdf/dist/jspdf.min.js" ]
+
+and import it in your component:
+
+import * as jsPDF from 'jspdf'
+
+Then you're ready to start making your document:
+
+// Default export is a4 paper, portrait, using milimeters for units
+var doc = new jsPDF()
+ 
+doc.text('Hello world!', 10, 10)
+doc.save('a4.pdf')
+
+If you want to change the paper size, orientation, or units, you can do:
+
+// Landscape export, 2×4 inches
+var doc = new jsPDF({
+  orientation: 'landscape',
+  unit: 'in',
+  format: [4, 2]
+})
+ 
+doc.text('Hello world!', 1, 1)
+doc.save('two-by-four.pdf')
