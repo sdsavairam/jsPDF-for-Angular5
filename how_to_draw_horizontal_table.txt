@@ -1,0 +1,51 @@
+@Component({
+  selector: 'my-app',
+  template: 
+    `<h1>JSON to PDF app</h1>
+    <div class="container" id="div1">
+        <button id="create" (click)="convert('base')">Create file</button> 
+        <button id="create" (click)="convert('horizontal')">
+           Create file with horizontal table
+        </button> 
+    </div>
+    `
+})
+export class AppComponent {
+  cols: Array<any> = [{
+      title: "Details",
+      dataKey: 'details'
+    }, {
+      title: "Values",
+      dataKey: 'values'
+   }];
+
+  optionsContainer = {
+    base: {},
+    horizontal: {
+      drawHeaderRow: () => false,
+      columnStyles: {
+          details: {fillColor: [41, 128, 185], textColor: 255, fontStyle: 'bold'}
+      }
+    }
+  };
+
+  rows: Array<any> = [];
+
+  constructor() {
+    const item = {
+      "Name" : "XYZ",
+      "Age" : "22",
+      "Gender" : "Male"
+    }; 
+
+    this.rows = Object.keys(item).map((key) => {  
+      return { 'details': key, 'values': item[key] };
+    });
+  }
+
+  convert(action){
+    const doc = new jsPDF()
+       .autoTable(this.cols, this.rows, this.optionsContainer[action]);
+    doc.save('Test.pdf');
+  }
+}
